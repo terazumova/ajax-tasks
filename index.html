@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Логин и пароль</title>
+    <style>
+      .form-control {
+        display: flex;
+
+        margin-bottom: 15px;
+      }
+
+      .form__label {
+        min-width: 150px;
+      }
+
+      .form__input {
+        max-width: 500px;
+        flex: 1;
+      }
+
+      .error {
+        border: 1px solid #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="" class="form">
+      <div class="form-control">
+        <label for="login" class="form__label">Логин</label>
+        <input id="login" type="text" class="form__input form__input-login" name="login" />
+      </div>
+      <div class="form-control">
+        <label for="password" class="form__label">Пароль</label>
+        <input id="password" type="password" class="form__input form__input-password" name="password" />
+      </div>
+      <button type="submit">Отправить</button>
+    </form>
+  </body>
+</html>
+<script>
+  const form = document.querySelector('.form');
+
+  form.addEventListener('submit', event => {
+    const formElements = form.querySelectorAll('input');
+
+    let isValid = true;
+    for (let element of formElements) {
+      hideErrors(element);
+
+      if (!requiredValidation(element.value)) {
+        isValid = false;
+
+        showErrors(element);
+        event.preventDefault();
+      }
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    (async () => {
+      try {
+        let response = await fetch('api.json');
+        let responseObject = await response.json();
+
+        if (responseObject.status === 'ok') {
+          alert('Пользователь прошел авторизацию.');
+        }
+
+        if (responseObject.status === 'error') {
+          alert('Пароль неверный.');
+        }
+      } catch (err) {
+        alert('Ошибка на сервере.');
+      }
+    })();
+  });
+
+  function hideErrors(element) {
+    element.classList.remove('error');
+  }
+
+  function showErrors(element) {
+    element.classList.add('error');
+  }
+
+  function requiredValidation(value) {
+    return value.trim().length !== 0;
+  }
+</script>
