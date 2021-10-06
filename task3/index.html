@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>Лайк/дизлайк</title>
+    <style>
+      .icon {
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <i class="far fa-thumbs-up icon"></i>
+  </body>
+</html>
+<script>
+  const like = document.querySelector('.fa-thumbs-up ');
+
+  function toggleLike(jsonPath, isLike) {
+    fetch(jsonPath)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (result) {
+        if (isLike) {
+          like.classList.add('fas');
+          like.classList.remove('far');
+        } else {
+          like.classList.add('far');
+          like.classList.remove('fas');
+        }
+      });
+  }
+
+  like.addEventListener('click', event => {
+    if (like.classList.contains('far')) {
+      toggleLike('like.json', true);
+    }
+
+    if (like.classList.contains('fas')) {
+      toggleLike('dislike.json', false);
+    }
+  });
+</script>

@@ -42,6 +42,7 @@
 </html>
 <script>
   const form = document.querySelector('.form');
+  const password = document.querySelector('.form__input-password');
 
   form.addEventListener('submit', event => {
     const formElements = form.querySelectorAll('input');
@@ -64,14 +65,16 @@
 
     (async () => {
       try {
-        let response = await fetch('api.json');
-        let responseObject = await response.json();
+        const response = await fetch('api.json');
+        const result = await response.json();
 
-        if (responseObject.status === 'ok') {
+        if (result.status === 'ok') {
+          hideErrors(password);
           alert('Пользователь прошел авторизацию.');
         }
 
-        if (responseObject.status === 'error') {
+        if (result.status === 'error') {
+          showErrors(password);
           alert('Пароль неверный.');
         }
       } catch (err) {
@@ -79,7 +82,6 @@
       }
     })();
   });
-
   function hideErrors(element) {
     element.classList.remove('error');
   }
